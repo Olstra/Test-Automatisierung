@@ -1,66 +1,57 @@
 *** Settings ***
 Library  SeleniumLibrary
 
-# TODO ->Datum für Kurzbeschreibung benutzen
 *** Variables ***
-
-[Timeout]   10
 ${Browser}      Chrome
-${Username}     admin
-${Password}     nimda
-${Delay}        3s
+${Delay}        20s
+
+# Login-SSA variables
+${Username}     oli+13@sobr.ch
+${Password}     1aA@0000
+${Anmelden}     xpath=/html/body/div[1]/div/div/div/section/div/div/div/div[2]/div[1]/div/form/section[3]/div[1]
 
 ${Massnahmen}           xpath=//body/div[@id='smartadmin-root']/div[1]/aside[1]/nav[1]/ul[1]/li[5]/a[1]
-
-${Hinzufügen}           xpath=/html/body/div[1]/div/div[3]/div/div/div/div/div[2]/div/div[2]/div/div
-
-${Kurzbeschreibung}     xpath=//body/div[@id='smartadmin-root']/div[1]/div[3]/div[1]/div[1]/div[2]/div[2]/section[1]/div[1]/div[1]/div[1]/div[1]/section[1]/div[1]/fieldset[1]/div[4]/section[1]/section[1]/label[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]
-
+${Hinzufügen}           xpath=//div[contains(text(),'Hinzufügen')]
+${Kurzbeschreibung}     xpath=//body/div[@id='smartadmin-root']/div[1]/div[4]/div[1]/div[1]/div[2]/div[2]/section[1]/div[1]/div[1]/div[1]/div[1]/section[1]/div[1]/fieldset[1]/div[4]/section[1]/section[1]/label[1]/div[1]/div[1]/div[1]
 ${Text}                 Test-Oliver2020
-${Dropdown}             xpath=/html/body/div[1]/div/div[3]/div/div[1]/div[2]/div[2]/section/div/div/div/div/section/div/fieldset[3]/div[4]/section/section/label/div/div[3]
+${Speichern}            class=save-text
+
+${aaa}  xpath=//*[@id="field-value-list"]/fieldset[1]/div[4]/section/section/label/span
+
 
 *** Test Cases ***
-This is the title of the test case
-    Open Browser	https://ssa-test.scapp.io	${Browser}
-    sleep   ${Delay}
-    Enter User Name
-    Enter Password
-    Click Login
+Man kann eine neue Massnahme erzeugen
+    Login-SSA
 
-    Wait Until Element Is Visible   xpath=//body/div[@id='smartadmin-root']/div[1]/aside[1]/nav[1]/ul[1]/li[5]/a[1]
     # wait until loading spinner isn't visible anymore (otherwise click on spinner bg)
-    Wait Until Element Is Not Visible   10s     class=loader-bg
+    Wait For Loading Spinner
+
     Click Element   ${Massnahmen}
 
-    # zuerst menü wieder zuklappen, sonst click nicht möglich
-    #Wait Until Element Is Visible   xpath=/html/body/div[1]/div/aside/nav/div[1]
-    #Click Minify
-
-    #Wait Until Element Is Visible   ${Hinzufügen}
-    #Click Element   ${Hinzufügen}
+    Wait Until Element Is Visible   ${Hinzufügen}
+    Click Element   ${Hinzufügen}
 
     # öbbis ih "Kurzbeschreibung" schriibe
-    #Wait Until Element Is Visible   ${Kurzbeschreibung}
-    #Add Kurzbeschreibung
+    Wait Until Element Is Visible   ${aaa}    ${Delay}
+    Click Element   ${Kurzbeschreibung}
+    Sleep   5s
+    Input Text  ${Kurzbeschreibung}   Test-Oliver
 
-    #Wait Until Element Is Visible   xpath=/html/body/div[1]/div/div[3]/div/div[1]/div[2]/div[3]/div[1]
-    #Click Speichern
+    Click Element   ${Speichern}
 
 *** Keywords ***
-Enter User Name
-    Input Text  id=login-email  ${Username}
+Login-SSA
+    Open Browser	https://ssa-test.scapp.io	${Browser}
+    Maximize Browser Window
+    Wait Until Element Is Visible               ${Anmelden}
+    Input Text      id=login-email              ${Username}
+    Input Text      name=Passwort               ${Password}
+    Click Element                               ${Anmelden}
 
-Enter Password
-    Input Text  name=Passwort   ${Password}
-
-Click Login
-    Click Element   xpath=/html/body/div[1]/div/div/div/section/div/div/div/div[2]/div[1]/div/form/section[3]/div[1]
-
-Click Speichern
-    Click Element   xpath=/html/body/div[1]/div/div[3]/div/div[1]/div[2]/div[3]/div[1]
+Wait For Loading Spinner
+    Sleep   10s
+    Wait Until Element Is Not Visible   class=loader-bg     ${Delay}
+    Wait Until Element Is Visible       ${Massnahmen}    ${Delay}
 
 Click Minify
     Click Element  xpath=/html/body/div[1]/div/aside/nav/div[1]
-
-Add Kurzbeschreibung
-    Input Text  ${Kurzbeschreibung}   Test-Oliver
