@@ -17,6 +17,7 @@ ${SpontanesA}   class=icon-spontaneous-audit
 ${Hinzufügen}   xpath=//div[contains(text(),'Hinzufügen')]
 ${Speichern}    class=save-text
 
+# Angaben für die Kontrolle
 ${LetzteAe}     xpath=//*[@id="content"]/div/div/div[2]/div/div[1]/div/div[2]/table/tbody/tr[1]/td[2]/div/div/div/span/span[1]/span
 ${ZuletztBeV}   xpath=//*[@id="content"]/div/div/div[2]/div/div[1]/div/div[2]/table/tbody/tr[1]/td[3]/div/div/div/span/span[1]/span
 ${ErfasstAm}    xpath=//*[@id="content"]/div/div/div[2]/div/div[1]/div/div[2]/table/tbody/tr[1]/td[5]/div/div/div/span/span[1]/span
@@ -24,7 +25,7 @@ ${ErfasstAm}    xpath=//*[@id="content"]/div/div/div[2]/div/div[1]/div/div[2]/ta
 
 # für die Kontrolle - Datum+Uhrzeit benutzen
 *** Test Cases ***
-Man kann eine neue Information erzeugen
+Man kann ein neues SPONTANES AUDIT erzeugen
     Login-SSA
 
     # wait until loading spinner isn't visible anymore (otherwise click on spinner bg)
@@ -39,11 +40,11 @@ Man kann eine neue Information erzeugen
     # Wait Until Element Is Visible   ${Speichern}      ${Delay}
     Click Element   ${Speichern}
 
-    # check values of new entry
+    # get value check
     ${Date}=   Get Current Date    result_format=%d.%m.%Y
-    Element Text Should Be    ${LetzteAe}   ${Date}
-    Element Text Should Be    ${ErfasstAm}   ${Date}
-    Element Text Should Be    ${ZuletztBeV}   Tester Robot
+    Element Text Should Be    ${LetzteAe}       ${Date}
+    Element Text Should Be    ${ZuletztBeV}     Tester Robot
+    Element Text Should Be    ${ErfasstAm}      ${Date}
 
 
 *** Keywords ***

@@ -31,9 +31,7 @@ Man kann eine neue Information erzeugen
     Login-SSA
 
     # wait until loading spinner isn't visible anymore (otherwise click on spinner bg)
-    Sleep   10s
-    Wait Until Element Is Not Visible   class=loader-bg     ${Delay}
-    Wait Until Element Is Visible       ${Informationen}    ${Delay}
+    Wait For Loading Spinner
 
     Click Element   ${Informationen}
 
@@ -41,20 +39,12 @@ Man kann eine neue Information erzeugen
     Wait Until Element Is Visible   ${Hinzufügen}   ${Delay}
     Click Element   ${Hinzufügen}
 
-    # Wait Until Element Is Visible   ${Speichern}      ${Delay}
+    Wait Until Element Is Visible   ${Speichern}      ${Delay}
     Click Element   ${Speichern}
 
-    ${Date}=   Get Current Date    result_format=%d.%m.%Y, ${Min}
-
     # get value check
+    ${Date}=   Get Current Date    result_format=%d.%m.%Y, ${Min}
     Element Text Should Be    //*[@id="content"]/div/div/div[2]/div/div[1]/div/div[2]/table/tbody/tr[1]/td[4]/div/div/div/span/span[1]/span[2]   ${Date}
-
-
-    # Text in info hinzufügen TODO
-#    Scroll Element Into View    ${Anhaenge}
-#    Wait Until Element Is Visible    ${Text}
-#    Click Element   ${TxtInput}
-#    Input Text   ${Titel}  Test-Oliver
 
 *** Keywords ***
 
@@ -66,5 +56,7 @@ Login-SSA
     Input Text      name=Passwort               ${Password}
     Click Element                               ${Anmelden}
 
-Click Minify
-    Click Element  xpath=/html/body/div[1]/div/aside/nav/div[1]
+Wait For Loading Spinner
+    Sleep   10s
+    Wait Until Element Is Not Visible   class=loader-bg     ${Delay}
+    Wait Until Element Is Visible       ${Informationen}    ${Delay}

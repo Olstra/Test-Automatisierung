@@ -20,7 +20,7 @@ ${aaa}  xpath=//*[@id="field-value-list"]/fieldset[1]/div[4]/section/section/lab
 
 
 *** Test Cases ***
-Man kann eine neue Massnahme erzeugen
+Man kann eine neue MASSNAHME erzeugen
     Login-SSA
 
     # wait until loading spinner isn't visible anymore (otherwise click on spinner bg)
